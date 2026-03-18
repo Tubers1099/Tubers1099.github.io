@@ -1,10 +1,146 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-  <title>Meu site</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TrollGui</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background: #2b2b2b;
+    color: white;
+}
+
+/* NAVBAR */
+.navbar {
+    display: flex;
+    align-items: center;
+    padding: 20px 40px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+}
+
+.logo .t {
+    font-size: 28px;
+}
+
+.logo .resto {
+    font-size: 14px;
+    color: #4da6ff;
+    margin-left: 2px;
+}
+
+/* CENTRO */
+.center {
+    height: calc(100vh - 80px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* TEXTO */
+.title {
+    font-size: 64px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+/* BOTÃO */
+.btn {
+    background: #3a3a3a;
+    border: 2px solid white;
+    color: white;
+    padding: 15px 30px;
+    font-size: 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn:hover {
+    background: #4a4a4a;
+}
+
+.btn:active {
+    background: black;
+    transform: scale(0.96);
+}
+
+/* NOTIFICAÇÃO */
+.toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: #2ecc71;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 10px;
+    font-size: 14px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+</style>
 </head>
+
 <body>
-  <h1>Olá, mundo!</h1>
-  <p>Meu primeiro site no GitHub 🚀</p>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <div class="logo">
+        <span class="t">T</span>
+        <span class="resto">rollGui</span>
+    </div>
+</div>
+
+<!-- CONTEÚDO -->
+<div class="center">
+    <div class="title">TrollGui</div>
+    <button class="btn" onclick="copiarScript()">Get TrollGui Script</button>
+</div>
+
+<!-- NOTIFICAÇÃO -->
+<div id="toast" class="toast">
+    Copiado o script na área de transferência
+</div>
+
+<script>
+// ================= CONFIGURAÇÃO =================
+// COLOQUE AQUI O TEXTO QUE VOCÊ QUER COPIAR
+const scriptParaCopiar = `COLE SEU SCRIPT AQUI`;
+// ===============================================
+
+function copiarScript() {
+    navigator.clipboard.writeText(scriptParaCopiar);
+
+    let toast = document.getElementById("toast");
+
+    // mostrar
+    toast.classList.add("show");
+
+    // esconder depois de 3s
+    setTimeout(() => {
+        toast.classList.remove("show");
+    }, 3000);
+}
+</script>
+
 </body>
 </html>
