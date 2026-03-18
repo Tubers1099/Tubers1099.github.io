@@ -8,42 +8,50 @@
 <link rel="icon" href="data:image/svg+xml,
 <svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22>
 <text x=%2210%22 y=%2270%22 font-size=%2270%22 fill=%22white%22>T</text>
-<text x=%2245%22 y=%2270%22 font-size=%2220%22 fill=%224da6ff%22>roll</text>
+<text x=%2245%22 y=%2270%22 font-size=%2220%22 fill=%2200ffff%22>roll</text>
 </svg>">
 
 <style>
-* { margin:0; padding:0; box-sizing:border-box; font-family:Segoe UI; }
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Segoe UI;
+}
 
 body {
-    background: radial-gradient(circle at top, #2f2f2f, #1a1a1a);
+    background:black;
     color:white;
     overflow:hidden;
 }
 
-/* LOADING */
-.loader {
+/* GRID 3D CYBERPUNK */
+.grid {
     position:fixed;
     width:100%;
     height:100%;
-    background:#111;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    z-index:999;
-    font-size:24px;
-    letter-spacing:2px;
-    animation: fadeOut 1s ease 2s forwards;
+    background:
+    linear-gradient(#00ffff22 1px, transparent 1px),
+    linear-gradient(90deg, #00ffff22 1px, transparent 1px);
+    background-size:40px 40px;
+    transform: perspective(500px) rotateX(60deg);
+    animation: moveGrid 10s linear infinite;
+    z-index:-2;
 }
 
-@keyframes fadeOut {
-    to { opacity:0; visibility:hidden; }
+@keyframes moveGrid {
+    from { background-position:0 0; }
+    to { background-position:0 40px; }
 }
 
-/* PARTICLES */
-canvas {
+/* GLOW DO MOUSE */
+.glow {
     position:fixed;
-    top:0;
-    left:0;
+    width:300px;
+    height:300px;
+    background: radial-gradient(circle, #00ffff55, transparent 70%);
+    pointer-events:none;
+    transform: translate(-50%, -50%);
     z-index:-1;
 }
 
@@ -53,7 +61,7 @@ canvas {
 }
 
 .logo .t { font-size:30px; }
-.logo .resto { color:#4da6ff; font-size:14px; }
+.logo .resto { color:#00ffff; font-size:14px; }
 
 /* CENTER */
 .center {
@@ -65,35 +73,20 @@ canvas {
 
 /* CARD */
 .card {
-    backdrop-filter: blur(20px);
-    background: rgba(255,255,255,0.05);
-    border:1px solid rgba(255,255,255,0.1);
+    backdrop-filter: blur(15px);
+    background: rgba(0,0,0,0.5);
+    border:1px solid #00ffff33;
     padding:60px;
     border-radius:20px;
-    box-shadow:0 0 60px rgba(0,0,0,0.6);
+    box-shadow:0 0 50px #00ffff22;
     text-align:center;
 }
 
 /* TITLE */
 .title {
     font-size:64px;
-    margin-bottom:20px;
-}
-
-/* DOWNLOAD COUNT */
-.counter {
-    margin-bottom:20px;
-    opacity:0.7;
-}
-
-/* SELECT */
-select {
-    padding:10px;
-    margin-bottom:20px;
-    border-radius:8px;
-    border:none;
-    background:#333;
-    color:white;
+    margin-bottom:30px;
+    text-shadow:0 0 20px #00ffff;
 }
 
 /* BUTTON */
@@ -101,14 +94,15 @@ select {
     position:relative;
     padding:15px 35px;
     border-radius:12px;
-    border:1px solid rgba(255,255,255,0.2);
-    background:rgba(255,255,255,0.08);
-    color:white;
+    border:1px solid #00ffff88;
+    background:transparent;
+    color:#00ffff;
     cursor:pointer;
     overflow:hidden;
     transition:0.3s;
 }
 
+/* brilho */
 .btn::before {
     content:"";
     position:absolute;
@@ -116,22 +110,24 @@ select {
     left:-80%;
     width:50%;
     height:100%;
-    background:linear-gradient(120deg, transparent, rgba(255,255,255,0.5), transparent);
+    background:linear-gradient(120deg, transparent, #00ffffaa, transparent);
 }
 
 .btn:hover::before {
     animation: brilho 1s forwards;
 }
 
-@keyframes brilho { to { left:120%; } }
+@keyframes brilho {
+    to { left:120%; }
+}
 
 .btn:hover {
+    box-shadow:0 0 20px #00ffff, 0 0 40px #00ffff55;
     transform:scale(1.05);
-    box-shadow:0 0 25px rgba(255,255,255,0.2);
 }
 
 .btn:active {
-    background:black;
+    background:#00ffff22;
     transform:scale(0.95);
 }
 
@@ -140,9 +136,10 @@ select {
     position:fixed;
     bottom:30px;
     right:30px;
-    background:linear-gradient(135deg,#2ecc71,#27ae60);
+    background:#00ff99;
+    color:black;
     padding:15px 25px;
-    border-radius:12px;
+    border-radius:10px;
     opacity:0;
     transform:translateY(20px);
     transition:0.3s;
@@ -157,9 +154,8 @@ select {
 
 <body>
 
-<div class="loader">Loading TrollGui...</div>
-
-<canvas id="particles"></canvas>
+<div class="grid"></div>
+<div class="glow" id="glow"></div>
 
 <div class="navbar">
     <div class="logo">
@@ -171,92 +167,38 @@ select {
 <div class="center">
     <div class="card">
         <div class="title">TrollGui</div>
-
-        <div class="counter" id="counter">Downloads: 0</div>
-
-        <select id="scriptSelect">
-            <option value="script1">Script 1</option>
-            <option value="script2">Script 2</option>
-            <option value="script3">Script 3</option>
-        </select>
-
-        <br>
-
         <button class="btn" onclick="copiarScript()">Get TrollGui Script</button>
     </div>
 </div>
 
-<div id="toast" class="toast">Copiado!</div>
+<div id="toast" class="toast">Script copiado!</div>
 
 <audio id="clickSound">
 <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_115b9b1f58.mp3">
 </audio>
 
 <script>
-// SCRIPTS CONFIG
-const scripts = {
-    script1: "SCRIPT 1 AQUI",
-    script2: "SCRIPT 2 AQUI",
-    script3: "SCRIPT 3 AQUI"
-};
+// CONFIG DO SCRIPT
+const scriptParaCopiar = `COLE SEU SCRIPT AQUI`;
 
 // COPY
 function copiarScript(){
-    let selected = document.getElementById("scriptSelect").value;
-    navigator.clipboard.writeText(scripts[selected]);
+    navigator.clipboard.writeText(scriptParaCopiar);
 
     document.getElementById("clickSound").play();
 
     let toast = document.getElementById("toast");
     toast.classList.add("show");
 
-    setTimeout(()=> toast.classList.remove("show"), 3000);
+    setTimeout(()=> toast.classList.remove("show"),3000);
 }
 
-// COUNTER FAKE
-let count = 0;
-setInterval(()=>{
-    count += Math.floor(Math.random()*5);
-    document.getElementById("counter").innerText = "Downloads: " + count;
-},1000);
-
-// PARTICLES
-const canvas = document.getElementById("particles");
-const ctx = canvas.getContext("2d");
-
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-let particles = [];
-
-for(let i=0;i<80;i++){
-    particles.push({
-        x:Math.random()*canvas.width,
-        y:Math.random()*canvas.height,
-        r:Math.random()*2,
-        d:Math.random()*1
-    });
-}
-
-function draw(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    ctx.fillStyle="rgba(255,255,255,0.3)";
-    particles.forEach(p=>{
-        ctx.beginPath();
-        ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-        ctx.fill();
-    });
-    move();
-}
-
-function move(){
-    particles.forEach(p=>{
-        p.y+=p.d;
-        if(p.y>canvas.height) p.y=0;
-    });
-}
-
-setInterval(draw,30);
+// GLOW SEGUINDO MOUSE
+document.addEventListener("mousemove", (e)=>{
+    const glow = document.getElementById("glow");
+    glow.style.left = e.clientX + "px";
+    glow.style.top = e.clientY + "px";
+});
 </script>
 
 </body>
